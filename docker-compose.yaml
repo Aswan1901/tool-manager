@@ -50,7 +50,27 @@ services:
     profiles:
       - postgres
       - all
-
+  # =============================================
+  # php config
+  # =============================================
+  php:
+    container_name: internal-tools-php
+    build: ./Dockerfile/php
+    volumes:
+      - ../src:/var/www/html
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DATABASE}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal-tools-net
+    profiles:
+      - all
 # =============================================
 # VOLUMES & NETWORKS
 # =============================================
