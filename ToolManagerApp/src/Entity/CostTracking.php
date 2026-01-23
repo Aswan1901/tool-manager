@@ -16,12 +16,6 @@ class CostTracking
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, Tools>
-     */
-    #[ORM\OneToMany(targetEntity: Tools::class, mappedBy: 'costTracking')]
-    private Collection $toolId;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $month_year = null;
 
@@ -29,10 +23,14 @@ class CostTracking
     private ?string $totalMonthlyCost = null;
 
     #[ORM\Column]
-    private ?int $activeUserCount = null;
+    private ?int $activeUsersCount = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\ManyToOne(inversedBy: 'costTrackings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tools $tool = null;
 
     public function __construct()
     {
@@ -50,28 +48,6 @@ class CostTracking
     public function getToolId(): Collection
     {
         return $this->toolId;
-    }
-
-    public function addToolId(Tools $toolId): static
-    {
-        if (!$this->toolId->contains($toolId)) {
-            $this->toolId->add($toolId);
-            $toolId->setCostTracking($this);
-        }
-
-        return $this;
-    }
-
-    public function removeToolId(Tools $toolId): static
-    {
-        if ($this->toolId->removeElement($toolId)) {
-            // set the owning side to null (unless already changed)
-            if ($toolId->getCostTracking() === $this) {
-                $toolId->setCostTracking(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getMonthYear(): ?\DateTime
@@ -98,14 +74,14 @@ class CostTracking
         return $this;
     }
 
-    public function getActiveUserCount(): ?int
+    public function getActiveUsersCount(): ?int
     {
-        return $this->activeUserCount;
+        return $this->activeUsersCount;
     }
 
-    public function setActiveUserCount(int $activeUserCount): static
+    public function setActiveUsersCount(int $activeUsersCount): static
     {
-        $this->activeUserCount = $activeUserCount;
+        $this->activeUsersCount = $activeUsersCount;
 
         return $this;
     }
@@ -118,6 +94,18 @@ class CostTracking
     public function setCreatedAt(?\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getTool(): ?Tools
+    {
+        return $this->tool;
+    }
+
+    public function setTool(?Tools $tool): static
+    {
+        $this->tool = $tool;
 
         return $this;
     }

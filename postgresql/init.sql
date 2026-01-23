@@ -373,9 +373,9 @@ VALUES
         'active'
     ),
     (
-        'Dockerfile Hub',
+        'default.conf Hub',
         'Container registry and tools',
-        'Dockerfile Inc.',
+        'default.conf Inc.',
         'https://hub.docker.com',
         2,
         5.00,
@@ -865,7 +865,7 @@ INSERT INTO user_tool_access (user_id, tool_id, granted_by, granted_at) VALUES
 (1, 3, 26, '2025-05-01 09:00:00'::timestamp), -- GitHub
 (1, 4, 26, '2025-05-01 09:00:00'::timestamp), -- Jira
 (1, 5, 26, '2025-05-01 09:00:00'::timestamp), -- Confluence
-(1, 6, 26, '2025-05-01 09:00:00'::timestamp), -- Dockerfile Hub
+(1, 6, 26, '2025-05-01 09:00:00'::timestamp), -- default.conf Hub
 (1, 7, 26, '2025-05-01 09:00:00'::timestamp), -- Postman
 (1, 10, 26, '2025-05-01 09:00:00'::timestamp), -- Google Workspace
 (1, 11, 26, '2025-05-01 09:00:00'::timestamp), -- Notion
@@ -879,7 +879,7 @@ INSERT INTO user_tool_access (user_id, tool_id, granted_by, granted_at) VALUES
 (2, 3, 1, '2025-05-05 09:00:00'::timestamp), -- GitHub
 (2, 4, 1, '2025-05-05 09:00:00'::timestamp), -- Jira
 (2, 5, 1, '2025-05-05 09:00:00'::timestamp), -- Confluence
-(2, 6, 1, '2025-05-05 09:00:00'::timestamp), -- Dockerfile Hub
+(2, 6, 1, '2025-05-05 09:00:00'::timestamp), -- default.conf Hub
 (2, 7, 1, '2025-05-05 09:00:00'::timestamp), -- Postman
 (2, 10, 1, '2025-05-05 09:00:00'::timestamp), -- Google Workspace
 (2, 11, 1, '2025-05-05 09:00:00'::timestamp), -- Notion

@@ -55,7 +55,7 @@ services:
   # =============================================
   php:
     container_name: internal-tools-php
-    build: ./Dockerfile/php
+    build: Dockerfile/php
     volumes:
       - ./ToolManagerApp:/var/www/
     environment:
@@ -71,6 +71,21 @@ services:
       - internal-tools-net
     profiles:
       - all
+# =============================================
+# Nginx
+# =============================================
+  nginx:
+    container_name: internal-tools-nginx
+    build: Dockerfile/nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./ToolManagerApp:/var/www
+    depends_on:
+      - php
+    networks:
+      - internal-tools-net
+
 # =============================================
 # VOLUMES & NETWORKS
 # =============================================
