@@ -32,17 +32,21 @@
 
 ## Configuration
 - Variables d'environnement: voir .env
-- POSTGRES_DATABASE=internal_tools
+```
+  POSTGRES_DATABASE=internal_tools
   POSTGRES_USER=
   POSTGRES_PASSWORD=
   POSTGRES_PORT=
+```
   
 ## Base de données
 - postgresql/init.sql
 
 ## APIs testée avec Postman
+```
 GET /api/tools
 GET /api/tools/filter?ownerDepartment=Design&status=active
+```
 
 
 
