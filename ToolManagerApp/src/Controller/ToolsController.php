@@ -7,16 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/api')]
 final class ToolsController extends AbstractController
 {
     public function __construct(
         Private EntityManagerInterface $entityManager,
-        Private SerializerInterface $serializer,
-
     )
     {
     }
@@ -33,10 +30,14 @@ final class ToolsController extends AbstractController
             ['groups' => ['tool:list']]
         );
     }
-    #[Route('/tools/filter', name: 'app_tools_filter')]
-    public function filteredTools(): JsonResponse
+
+    //filtré par département et statut
+    #[Route('/tools/filter', name: 'app_tools_filter', methods: ['GET'])]
+    public function filteredTools(Request $request): JsonResponse
     {
-        $tools = $this->entityManager->getRepository(Tools::class)->findAll();
+        $department = $request->query->get('ownerDepartment');
+        $status = $request->query->get('status');
+        $tools = $this->entityManager->getRepository(Tools::class)->findByFilters($department, $status);
 
         return $this->json(
             $tools,

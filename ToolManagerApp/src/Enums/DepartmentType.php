@@ -13,3 +13,4 @@ enum DepartmentType: string
     case HR = 'HR';
     case Design = 'Design';
 }
+

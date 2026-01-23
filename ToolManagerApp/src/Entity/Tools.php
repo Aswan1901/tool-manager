@@ -49,7 +49,7 @@ class Tools
 
     #[ORM\Column(enumType: DepartmentType::class)]
     #[Groups(['tool:list', 'tool:detail'])]
-    private ?DepartmentType $owner_department = null;
+    private ?DepartmentType $ownerDepartment = null;
 
     #[ORM\Column(enumType: ToolStatusType::class)]
     #[Groups(['tool:list', 'tool:detail'])]
@@ -154,12 +154,12 @@ class Tools
 
     public function getOwnerDepartment(): ?DepartmentType
     {
-        return $this->owner_department;
+        return $this->ownerDepartment;
     }
 
-    public function setOwnerDepartment(DepartmentType $owner_department): static
+    public function setOwnerDepartment(DepartmentType $ownerDepartment): static
     {
-        $this->owner_department = $owner_department;
+        $this->ownerDepartment = $ownerDepartment;
 
         return $this;
     }
