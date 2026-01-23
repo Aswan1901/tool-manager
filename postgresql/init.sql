@@ -12,7 +12,7 @@ SET timezone = 'UTC';
 -- CUSTOM TYPES (ENUMs)
 -- =============================================
 
--- Department enum
+-- DepartmentType enum
 CREATE TYPE department_type AS ENUM (
     'Engineering',
     'Sales',

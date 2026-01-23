@@ -57,7 +57,7 @@ services:
     container_name: internal-tools-php
     build: ./Dockerfile/php
     volumes:
-      - ./ToolManagerApp2:/var/www/
+      - ./ToolManagerApp:/var/www/
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
