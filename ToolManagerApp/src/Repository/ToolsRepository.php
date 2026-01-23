@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Tools;
+use App\Enums\DepartmentType;
+use App\Enums\ToolStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +17,24 @@ class ToolsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tools::class);
     }
+
+    public function findByFilters(?string $department, ?string $status): array
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        if ($department) {
+            $qb->andWhere('t.ownerDepartment = :department')
+                ->setParameter('department', $department);
+        }
+
+        if ($status) {
+            $qb->andWhere('t.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
 
     //    /**
     //     * @return Tools[] Returns an array of Tools objects

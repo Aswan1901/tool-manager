@@ -16,11 +16,11 @@ class UsageLogs
 
     #[ORM\ManyToOne(inversedBy: 'usageLogs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $userId = null;
+    private ?Users $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'usageLogs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Tools $toolId = null;
+    private ?Tools $tool = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $sessionDate = null;
@@ -29,7 +29,7 @@ class UsageLogs
     private ?int $usageMinutes = null;
 
     #[ORM\Column]
-    private ?int $actionCount = null;
+    private ?int $actionsCount = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -39,26 +39,26 @@ class UsageLogs
         return $this->id;
     }
 
-    public function getUserId(): ?Users
+    public function getUser(): ?Users
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?Users $userId): static
+    public function setUser(?Users $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getToolId(): ?Tools
+    public function getTool(): ?Tools
     {
-        return $this->toolId;
+        return $this->tool;
     }
 
-    public function setToolId(?Tools $toolId): static
+    public function setTool(?Tools $tool): static
     {
-        $this->toolId = $toolId;
+        $this->tool = $tool;
 
         return $this;
     }
@@ -87,14 +87,14 @@ class UsageLogs
         return $this;
     }
 
-    public function getActionCount(): ?int
+    public function getActionsCount(): ?int
     {
-        return $this->actionCount;
+        return $this->actionsCount;
     }
 
-    public function setActionCount(int $actionCount): static
+    public function setActionsCount(int $actionsCount): static
     {
-        $this->actionCount = $actionCount;
+        $this->actionsCount = $actionsCount;
 
         return $this;
     }
