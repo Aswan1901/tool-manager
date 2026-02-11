@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Categories;
 use App\Entity\Tools;
 use App\Enums\DepartmentType;
 use App\Enums\ToolStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -13,12 +15,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ToolsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Private EntityManagerInterface $entityManager,)
     {
         parent::__construct($registry, Tools::class);
     }
 
-    public function findByFilters(?string $department, ?string $status): array
+    public function findByFilters(?string $department, ?string $status, ?string $category, ?string $minCost, ?string $maxCost): array
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -30,6 +32,30 @@ class ToolsRepository extends ServiceEntityRepository
         if ($status) {
             $qb->andWhere('t.status = :status')
                 ->setParameter('status', $status);
+        }
+
+        if ($category) {
+            $categoryEntity = $this->entityManager->getRepository(Categories::class)->findOneBy
+            (
+                ['name' => $category]
+            );
+
+            if (!$categoryEntity) {
+                throw new \InvalidArgumentException("Category $category does not exist");
+            }
+
+            $qb->andWhere('t.category = :Category')
+                ->setParameter('Category', $categoryEntity);
+        }
+
+        if ($minCost) {
+            $qb->andWhere('t.monthly_cost >= :minCost')
+                ->setParameter('minCost', $minCost);
+        }
+
+        if ($maxCost) {
+            $qb->andWhere('t.monthly_cost <= :maxCost')
+                ->setParameter('maxCost', $maxCost);
         }
 
         return $qb->getQuery()->getResult();

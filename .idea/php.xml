@@ -10,9 +10,104 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/staabm/side-effects-detector" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/serializer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/type-info" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/property-access" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/property-info" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpstan/phpdoc-parser" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/doctrine-bridge" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/stopwatch" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/framework-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/polyfill-php85" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/cache-contracts" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/runtime" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/var-exporter" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/dotenv" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/flex" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/cache" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/php-invoker" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/browser-kit" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/composer" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.4" />
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/ToolManagerApp/vendor/autoload.php" />
+    </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />
