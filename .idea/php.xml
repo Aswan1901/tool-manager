@@ -98,6 +98,8 @@
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/dom-crawler" />
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/css-selector" />
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/composer" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/translation-contracts" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.4" />

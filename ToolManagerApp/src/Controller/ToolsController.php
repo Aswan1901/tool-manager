@@ -4,20 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Categories;
 use App\Entity\Tools;
-use App\Enums\DepartmentType;
-use App\Enums\ToolStatusType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\ValidatorResponder;
 
 #[Route('/api')]
 final class ToolsController extends AbstractController
 {
     public function __construct(
         Private EntityManagerInterface $entityManager,
+        Private ValidatorInterface $validator,
+        Private ValidatorResponder $validatorResponder,
+
     )
     {
     }
@@ -66,46 +70,63 @@ final class ToolsController extends AbstractController
     {
         try {
             $tool = $this->entityManager->getRepository(Tools::class)->find($id);
+
             if (!$tool) {
                 throw new NotFoundHttpException("Tool not found");
             }
-
             return $this->json($tool);
 
         }catch (NotFoundHttpException $exception){
-            return $this->json(['error' => $exception->getMessage(),404]);
+            return $this->json([
+                'error' => $exception->getMessage(),
+                'message' => "tool with id {$id} not found",
+                404]);
         }
     }
 
     #[Route('/tool/new', methods: ['POST'])]
-    public function addNewTool(Request $request): JsonResponse
+    public function addNewTool(Request $request, SerializerInterface $serializer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $tool = $serializer->deserialize($request->getContent(), Tools::class, 'json');
 
-        $departmentValue = $data['ownerDepartment'] ?? null;
-        $statusValue = $data['status'] ?? null;
-        $categoryValue = $data['category'] ?? null;
-
-        $department = DepartmentType::tryFrom($departmentValue);
-        $status = ToolStatusType::tryFrom($statusValue);
-
-        $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name'=> $categoryValue]);
-
-        $tool = new Tools();
-        $tool->setName($data['name']);
-        $tool->setDescription($data['description'] ?? null);
-        $tool->setMonthlyCost((float) ($data['monthlyCost'] ?? 0));
-        $tool->setActiveUserCount((int) ($data['activeUserCount'] ?? 0));
-        $tool->setVendor($data['vendor'] ?? null);
-        $tool->setOwnerDepartment($department);
-        $tool->setStatus($status);
-        $tool->setWebsiteUrl($data['websiteUrl'] ?? null);
+        if (isset($data['category'])){
+        $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name' => $data['category']]);
         $tool->setCategory($category);
+        }
+
+        $this->validatorResponder->validate($tool);
 
         $this->entityManager->persist($tool);
         $this->entityManager->flush();
 
         return $this->json($tool, 201);
+    }
+    #[Route('/tool/update/{id}', methods: ['PUT'])]
+    public function updateTool(int $id, Request $request, SerializerInterface $serializer): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $tool = $this->entityManager->getRepository(Tools::class)->find($id);
+        if (!$tool) {
+            throw new NotFoundHttpException("Tool not found");
+        }
+
+        $serializer->deserialize($request->getContent(), Tools::class, 'json', ['object_to_populate' => $tool]
+        );
+
+        if (isset($data['category'])){
+            $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name' => $data['category']]);
+            $tool->setCategory($category);
+        }
+
+        $this->validatorResponder->validate($tool);
+
+        $this->entityManager->flush();
+
+        return $this->json([
+            'tool' => $tool,
+            'status' => 'updated',
+        ], 201);
     }
 
 }
