@@ -8,8 +8,14 @@ use App\Repository\ToolsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 #[ORM\Entity(repositoryClass: ToolsRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Tool already exists!')]
+#[UniqueEntity(fields: ['website_url'], message: 'Website already exists!')]
+
 class Tools
 {
     #[ORM\Id]
@@ -20,6 +26,10 @@ class Tools
 
     #[ORM\Column(length: 100)]
     #[Groups(['tool:list', 'tool:detail'])]
+    #[Assert\Length(min: 2, max: 100,
+    minMessage: "The name of the tool is too short.",
+    maxMessage: "The name of the tool is too long."
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -32,6 +42,7 @@ class Tools
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['tool:list', 'tool:detail'])]
+    #[Assert\Url(message: "Must be a valid url format.")]
     private ?string $website_url = null;
 
     #[ORM\ManyToOne(inversedBy: 'tools')]
@@ -41,6 +52,7 @@ class Tools
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Groups(['tool:list', 'tool:detail'])]
+    #[Assert\Positive(message: "It must be a positive number.")]
     private ?string $monthly_cost = null;
 
     #[ORM\Column(nullable: false)]
