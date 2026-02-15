@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories
@@ -14,30 +15,23 @@ class Categories
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['tool:list', 'tool:detail'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['tool:list', 'tool:detail'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 7, nullable: true)]
-    private ?string $colorhex = "6366f1";
+    private ?string $color_hex = "6366f1";
 
     #[ORM\Column(nullable: true, options: ['default' => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeImmutable $created_at;
 
-    /**
-     * @var Collection<int, Tools>
-     */
-    #[ORM\OneToMany(targetEntity: Tools::class, mappedBy: 'categoryId')]
-    private Collection $tools;
 
-    public function __construct()
-    {
-        $this->tools = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -70,12 +64,12 @@ class Categories
 
     public function getColorhex(): ?string
     {
-        return $this->colorhex;
+        return $this->color_hex;
     }
 
     public function setColorhex(?string $colorhex): static
     {
-        $this->colorhex = $colorhex;
+        $this->color_hex = $colorhex;
 
         return $this;
     }
@@ -92,33 +86,4 @@ class Categories
         return $this;
     }
 
-    /**
-     * @return Collection<int, Tools>
-     */
-    public function getTools(): Collection
-    {
-        return $this->tools;
-    }
-
-    public function addTool(Tools $tool): static
-    {
-        if (!$this->tools->contains($tool)) {
-            $this->tools->add($tool);
-            $tool->setCategoryId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTool(Tools $tool): static
-    {
-        if ($this->tools->removeElement($tool)) {
-            // set the owning side to null (unless already changed)
-            if ($tool->getCategoryId() === $this) {
-                $tool->setCategoryId(null);
-            }
-        }
-
-        return $this;
-    }
 }

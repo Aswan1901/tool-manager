@@ -22,11 +22,12 @@ class Users
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(enumType: DepartmentType::class)]
+    #[ORM\Column(name: 'department', enumType: DepartmentType::class)]
     private ?DepartmentType $departmentType = null;
+
 
     #[ORM\Column(enumType: UserRoleType::class)]
     private UserRoleType $role = UserRoleType::employee;
@@ -40,33 +41,8 @@ class Users
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\Column(enumType: UserStatusType::class)]
-    private ?UserStatusType $user_status_active = UserStatusType::active;
-
-    /**
-     * @var Collection<int, UserToolAccess>
-     */
-    #[ORM\OneToMany(targetEntity: UserToolAccess::class, mappedBy: 'userId')]
-    private Collection $userToolAccesses;
-
-    /**
-     * @var Collection<int, AccessRequests>
-     */
-    #[ORM\OneToMany(targetEntity: AccessRequests::class, mappedBy: 'userId', orphanRemoval: true)]
-    private Collection $accessRequests;
-
-    /**
-     * @var Collection<int, UsageLogs>
-     */
-    #[ORM\OneToMany(targetEntity: UsageLogs::class, mappedBy: 'userId', orphanRemoval: true)]
-    private Collection $usageLogs;
-
-    public function __construct()
-    {
-        $this->userToolAccesses = new ArrayCollection();
-        $this->accessRequests = new ArrayCollection();
-        $this->usageLogs = new ArrayCollection();
-    }
+    #[ORM\Column(name:'status' ,enumType: UserStatusType::class)]
+    private ?UserStatusType $userStatusActive = UserStatusType::active;
 
     public function getId(): ?int
     {
@@ -109,12 +85,12 @@ class Users
         return $this;
     }
 
-    public function getRole(): ?UserStatusType
+    public function getRole(): ?UserRoleType
     {
         return $this->role;
     }
 
-    public function setRole(UserStatusType $role): static
+    public function setRole(UserRoleType $role): static
     {
         $this->role = $role;
 
@@ -159,102 +135,12 @@ class Users
 
     public function getUserStatusActive(): ?UserStatusType
     {
-        return $this->user_status_active;
+        return $this->userStatusActive;
     }
 
-    public function setUserStatusActive(UserStatusType $user_status_active): static
+    public function setUserStatusActive(UserStatusType $userStatusActive): static
     {
-        $this->user_status_active = $user_status_active;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, UserToolAccess>
-     */
-    public function getUserToolAccesses(): Collection
-    {
-        return $this->userToolAccesses;
-    }
-
-    public function addUserToolAccess(UserToolAccess $userToolAccess): static
-    {
-        if (!$this->userToolAccesses->contains($userToolAccess)) {
-            $this->userToolAccesses->add($userToolAccess);
-            $userToolAccess->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserToolAccess(UserToolAccess $userToolAccess): static
-    {
-        if ($this->userToolAccesses->removeElement($userToolAccess)) {
-            // set the owning side to null (unless already changed)
-            if ($userToolAccess->getUserId() === $this) {
-                $userToolAccess->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AccessRequests>
-     */
-    public function getAccessRequests(): Collection
-    {
-        return $this->accessRequests;
-    }
-
-    public function addAccessRequest(AccessRequests $accessRequest): static
-    {
-        if (!$this->accessRequests->contains($accessRequest)) {
-            $this->accessRequests->add($accessRequest);
-            $accessRequest->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAccessRequest(AccessRequests $accessRequest): static
-    {
-        if ($this->accessRequests->removeElement($accessRequest)) {
-            // set the owning side to null (unless already changed)
-            if ($accessRequest->getUserId() === $this) {
-                $accessRequest->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, UsageLogs>
-     */
-    public function getUsageLogs(): Collection
-    {
-        return $this->usageLogs;
-    }
-
-    public function addUsageLog(UsageLogs $usageLog): static
-    {
-        if (!$this->usageLogs->contains($usageLog)) {
-            $this->usageLogs->add($usageLog);
-            $usageLog->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUsageLog(UsageLogs $usageLog): static
-    {
-        if ($this->usageLogs->removeElement($usageLog)) {
-            // set the owning side to null (unless already changed)
-            if ($usageLog->getUserId() === $this) {
-                $usageLog->setUserId(null);
-            }
-        }
+        $this->userStatusActive = $userStatusActive;
 
         return $this;
     }
