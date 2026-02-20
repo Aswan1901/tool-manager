@@ -4,18 +4,17 @@ namespace App\Repository;
 
 use App\Entity\Categories;
 use App\Entity\Tools;
-use App\Enums\DepartmentType;
-use App\Enums\ToolStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @extends ServiceEntityRepository<Tools>
  */
 class ToolsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry, Private EntityManagerInterface $entityManager,)
+    public function __construct(ManagerRegistry $registry, Private EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Tools::class);
     }
