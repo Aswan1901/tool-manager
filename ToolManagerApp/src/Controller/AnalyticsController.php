@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Tools;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,15 +17,15 @@ final class AnalyticsController extends AbstractController
     {
     }
 
-    #[Route('/department-costs', name: 'app_analytics')]
+    #[Route('/department-costs', name: 'department_costs')]
     public function analytics(Request $request): JsonResponse
     {
 
         $sortByTotalCost = $request->query->get("sortByTotalCost");
-        $result = $this->dataAnalytics->getDataAnalytics();
+        $data = $this->dataAnalytics->getDataAnalytics();
 
-        $dataAnalytics = $result['dataAnalytics'];
-        $summary = $result['summary'];
+        $dataAnalytics = $data['dataAnalytics'];
+        $summary = $data['summary'];
 
         if ($sortByTotalCost === 'asc'){
 
@@ -46,12 +45,37 @@ final class AnalyticsController extends AbstractController
         ], 200);
     }
 
-    #[Route('/expensive-tool', name: 'app_analytics')]
+    #[Route('/expensive-tool', name: 'expensive-tool')]
     public function expensiveTools(Request $request): JsonResponse
     {
-        $expensiveTool = $request->query->get("expensive-tool");
+        $limit = $request->query->get("limit", 10);
+        $minCost = $request->query->get("min_cost");
 
+        if ($limit <=0){
+            return $this->json(["error"=>"La limite doit être supérieur à zero"], 400);
+        }
 
+        $data = $this->dataAnalytics->getDataAnalytics();
+        $dataAnalytics = $data['dataAnalytics'];
 
+        //trie descendent
+        uasort($dataAnalytics, function ($a, $b) {
+            return $b["totalCost"] <=> $a["totalCost"];
+        });
+
+        if ($minCost !== null){
+
+            $minCost = (int) $minCost;
+
+            $dataAnalytics = array_filter($dataAnalytics, function ($stats) use ($minCost) {
+                return $stats["totalCost"] >= $minCost;
+            });
+        }
+
+        $limited = array_slice($dataAnalytics,0, $limit, true);
+
+        return $this->json([
+            "data" => $limited,
+        ]);
     }
 }
