@@ -85,6 +85,8 @@ services:
       - php
     networks:
       - internal-tools-net
+    profiles:
+      - all
 
 # =============================================
 # VOLUMES & NETWORKS
