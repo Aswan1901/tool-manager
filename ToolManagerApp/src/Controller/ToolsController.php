@@ -29,14 +29,21 @@ final class ToolsController extends AbstractController
     #[Route('/tools', name: 'app_tools')]
     public function showAllTools(): JsonResponse
     {
-        $tools = $this->entityManager->getRepository(Tools::class)->findAll();
 
+        $tools = $this->entityManager->getRepository(Tools::class)->findAll();
+        try {
         return $this->json(
             $tools,
             200,
             [],
             ['groups' => ['tool:list']]
         );
+
+        }catch (){
+
+        }
+
+
     }
 
     #[Route('/tools/filter', name: 'app_tools_filter', methods: ['GET'])]
