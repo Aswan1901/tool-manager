@@ -29,14 +29,22 @@ final class ToolsController extends AbstractController
     #[Route('/tools', name: 'app_tools')]
     public function showAllTools(): JsonResponse
     {
+        try {
         $tools = $this->entityManager->getRepository(Tools::class)->findAll();
-
         return $this->json(
             $tools,
             200,
             [],
             ['groups' => ['tool:list']]
         );
+
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+            return $this->json(
+                ['error' => $e->getMessage()],
+                500
+            );
+        }
     }
 
     #[Route('/tools/filter', name: 'app_tools_filter', methods: ['GET'])]
@@ -61,7 +69,7 @@ final class ToolsController extends AbstractController
         }catch (\InvalidArgumentException $exception){
             return $this->json(['error' => $exception->getMessage(),400]);
         }catch (\Doctrine\DBAL\Exception $exception){
-            return $this->json(['error' => "Error database",500]);
+            return $this->json(['error' => $exception->getMessage(),500]);
         }
     }
 
@@ -70,10 +78,6 @@ final class ToolsController extends AbstractController
     {
         try {
             $tool = $this->entityManager->getRepository(Tools::class)->find($id);
-
-            if (!$tool) {
-                throw new NotFoundHttpException("Tool not found");
-            }
             return $this->json($tool);
 
         }catch (NotFoundHttpException $exception){
@@ -87,6 +91,8 @@ final class ToolsController extends AbstractController
     #[Route('/tool/new', methods: ['POST'])]
     public function addNewTool(Request $request, SerializerInterface $serializer): JsonResponse
     {
+        try {
+
         $data = json_decode($request->getContent(), true);
         $tool = $serializer->deserialize($request->getContent(), Tools::class, 'json');
 
@@ -101,32 +107,50 @@ final class ToolsController extends AbstractController
         $this->entityManager->flush();
 
         return $this->json($tool, 201);
+        }catch (\InvalidArgumentException $exception){
+
+            return $this->json(['error' => $exception->getMessage(),422]);
+
+        }catch (\Exception $exception){
+
+            return $this->json(
+                [
+                    'error' => $exception->getMessage(),
+                    500
+                ]);
+        }
     }
     #[Route('/tool/update/{id}', methods: ['PUT'])]
     public function updateTool(int $id, Request $request, SerializerInterface $serializer): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $tool = $this->entityManager->getRepository(Tools::class)->find($id);
-        if (!$tool) {
-            throw new NotFoundHttpException("Tool not found");
+        try {
+            $data = json_decode($request->getContent(), true);
+            $tool = $this->entityManager->getRepository(Tools::class)->find($id);
+            $serializer->deserialize($request->getContent(), Tools::class, 'json', ['object_to_populate' => $tool]
+            );
+
+            if (isset($data['category'])){
+                $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name' => $data['category']]);
+                $tool->setCategory($category);
+            }
+
+            $this->validatorResponder->validate($tool);
+
+            $this->entityManager->flush();
+
+            return $this->json([
+                'tool' => $tool,
+                'status' => 'updated',
+            ], 201);
+
+        }catch (\InvalidArgumentException $exception){
+            return $this->json(['error' => $exception->getMessage(),422]);
+
+        }catch (NotFoundHttpException $exception){
+            return $this->json([
+                'error' => $exception->getMessage(),
+                'message' => "tool with id {$id} not found",
+                404]);
         }
-
-        $serializer->deserialize($request->getContent(), Tools::class, 'json', ['object_to_populate' => $tool]
-        );
-
-        if (isset($data['category'])){
-            $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name' => $data['category']]);
-            $tool->setCategory($category);
-        }
-
-        $this->validatorResponder->validate($tool);
-
-        $this->entityManager->flush();
-
-        return $this->json([
-            'tool' => $tool,
-            'status' => 'updated',
-        ], 201);
     }
-
 }
