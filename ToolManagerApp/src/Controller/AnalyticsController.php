@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Categories;
+use App\Entity\Tools;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -76,6 +78,37 @@ final class AnalyticsController extends AbstractController
 
         return $this->json([
             "data" => $limited,
+        ]);
+    }
+
+    #[Route('/tools-by-category', name: 'expensive-tool')]
+    public function toolsByCategory (): JsonResponse
+    {
+        $toolsByCategory = [];
+        $tools = $this->entityManager->getRepository(Tools::class)->findAll();
+
+        //dump($tools);
+
+        //I need to count how many tools is used by a department
+        foreach ($tools as $tool){
+
+            $category = $tool->getCategory()->getName();
+            if (isset($toolsByCategory[$category])){
+                $toolsByCategory[$category] = [
+                    "category_name" => $category,
+                    "tools_count" => 0,
+                    "total_cost" => 0,
+                ];
+            }
+
+            $toolsByCategory[$category]["tools_count"]++;
+            $toolsByCategory[$category]["total_cost"] += $tool->getTotalCost();
+        }
+
+        dump($toolsByCategory);
+
+        return $this->json([
+            "data"
         ]);
     }
 }
