@@ -34,8 +34,7 @@ class ToolsRepository extends ServiceEntityRepository
         }
 
         if ($category) {
-            $categoryEntity = $this->entityManager->getRepository(Categories::class)->findOneBy
-            (
+            $categoryEntity = $this->entityManager->getRepository(Categories::class)->findOneBy(
                 ['name' => $category]
             );
 

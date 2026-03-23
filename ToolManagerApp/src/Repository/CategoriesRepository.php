@@ -16,6 +16,15 @@ class CategoriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Categories::class);
     }
 
+    public function getAllToolsByCategories()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->join('c.tools', 't')
+            ->getQuery();
+        return $qb->getResult();
+    }
+
     //    /**
     //     * @return Categories[] Returns an array of Categories objects
     //     */
