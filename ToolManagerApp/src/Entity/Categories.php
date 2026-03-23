@@ -15,7 +15,6 @@ class Categories
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['tool:list', 'tool:detail'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]

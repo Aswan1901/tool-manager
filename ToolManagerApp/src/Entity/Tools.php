@@ -30,6 +30,9 @@ class Tools
     minMessage: "The name of the tool is too short.",
     maxMessage: "The name of the tool is too long."
     )]
+    #[Assert\NotBlank(
+        message: "Name is required and must be 2-100 characters",
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
