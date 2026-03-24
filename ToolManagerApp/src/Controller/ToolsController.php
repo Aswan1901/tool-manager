@@ -21,12 +21,24 @@ final class ToolsController extends AbstractController
         Private EntityManagerInterface $entityManager,
         Private ValidatorInterface $validator,
         Private ValidatorResponder $validatorResponder,
-
     )
     {
     }
 
-    #[Route('/tools', name: 'app_tools')]
+    #[Route('/tools', name: 'app_tools', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/tools',
+        name: 'récupérer les outils',
+        tags: ['tools'],
+    )]
+    #[OA\Response(
+        response:200,
+        description: 'liste les outils',
+    )]
+    #[OA\Response(
+        response:500,
+        description: 'Erreur Serveur',
+    )]
     public function showAllTools(): JsonResponse
     {
         try {
@@ -45,6 +57,28 @@ final class ToolsController extends AbstractController
     }
 
     #[Route('/tools/filter', name: 'app_tools_filter', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/tools/filter',
+        summary: 'Filtrer les outils',
+        tags: ['Tools']
+    )]
+    #[OA\Parameter(name: 'ownerDepartment', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'Finance')]
+    #[OA\Parameter(name: 'status', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'active')]
+    #[OA\Parameter(name: 'category', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'Communication')]
+    #[OA\Parameter(name: 'minCost', in: 'query', required: false, schema: new OA\Schema(type: 'number', format: 'float'), example: 10)]
+    #[OA\Parameter(name: 'maxCost', in: 'query', required: false, schema: new OA\Schema(type: 'number', format: 'float'), example: 100)]
+    #[OA\Response(
+        response: 200,
+        description: 'Résultat du filtrage'
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Paramètres invalides'
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Erreur base de données ou serveur'
+    )]
     public function filteredTools(Request $request): JsonResponse
     {
         try {
@@ -82,6 +116,26 @@ final class ToolsController extends AbstractController
     }
 
     #[Route('/tool/{id}', name: 'app_tool', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/tool/{id}',
+        summary: 'Récupérer un outil par son ID',
+        tags: ['Tools']
+    )]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'path',
+        required: true,
+        schema: new OA\Schema(type: 'integer'),
+        example: 1
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Outil trouvé'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Outil non trouvé'
+    )]
     public function showOneTool(int $id): JsonResponse
     {
         try {
@@ -101,7 +155,38 @@ final class ToolsController extends AbstractController
         }
     }
 
-    #[Route('/tool/new', methods: ['POST'])]
+    #[Route('/tool/new', name: 'app_new_tool', methods: ['POST'])]
+    #[OA\Post(
+        path: '/api/tool/new',
+        summary: 'Créer un nouvel outil',
+        tags: ['Tools']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['name'],
+            properties: [
+                new OA\Property(property: 'name', type: 'string', example: 'New Tool'),
+                new OA\Property(property: 'description', type: 'string', example: 'This is a description'),
+                new OA\Property(property: 'status', type: 'string', example: 'active'),
+                new OA\Property(property: 'ownerDepartment', type: 'string', example: 'Sales'),
+                new OA\Property(property: 'cost', type: 'number', format: 'float', example: 89.99),
+                new OA\Property(property: 'category', type: 'string', example: 'Finance')
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Outil créé avec succès'
+    )]
+    #[OA\Response(
+        response: 422,
+        description: 'Erreur de validation'
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Erreur serveur'
+    )]
     public function addNewTool(Request $request, SerializerInterface $serializer): JsonResponse
     {
         try {
@@ -138,7 +223,44 @@ final class ToolsController extends AbstractController
                 ]);
         }
     }
-    #[Route('/tool/update/{id}', methods: ['PUT'])]
+    #[Route('/tool/update/{id}', name: "app_update_tool",methods: ['PUT'])]
+    #[OA\Put(
+        path: '/api/tool/update/{id}',
+        summary: 'Mettre à jour un outil',
+        tags: ['Tools']
+    )]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'path',
+        required: true,
+        schema: new OA\Schema(type: 'integer'),
+        example: 1
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'name', type: 'string', example: 'Outil version Pro'),
+                new OA\Property(property: 'description', type: 'string', example: 'ceci est une description'),
+                new OA\Property(property: 'status', type: 'string', example: 'revoked'),
+                new OA\Property(property: 'ownerDepartment', type: 'string', example: 'Design'),
+                new OA\Property(property: 'cost', type: 'number', format: 'float', example: 99.99),
+                new OA\Property(property: 'category', type: 'string', example: 'Analytics')
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Outil mis à jour'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Outil non trouvé'
+    )]
+    #[OA\Response(
+        response: 422,
+        description: 'Erreur de validation'
+    )]
     public function updateTool(int $id, Request $request, SerializerInterface $serializer): JsonResponse
     {
         try {
