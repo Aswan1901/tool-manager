@@ -42,19 +42,17 @@ final class ToolsController extends AbstractController
     public function showAllTools(): JsonResponse
     {
         try {
-            $tools = $this->entityManager->getRepository(Tools::class)->findAll();
-            return $this->json(
-                $tools,
-                200,
-                [],
-                ['groups' => ['tool:list']]
+        $tools = $this->entityManager->getRepository(Tools::class)->findAll();
+        return $this->json(
+            $tools,
+            200,
+            [],
+            ['groups' => ['tool:list'],]
         );
-
         }catch (\Exception $e){
-            return $this->json(
-                ['error' => $e->getMessage()],
-                500
-            );
+            return $this->json(["error" => "Internal server error",
+            "message"=>"Database connection failed"
+            ], 500);
         }
     }
 
@@ -84,28 +82,36 @@ final class ToolsController extends AbstractController
     public function filteredTools(Request $request): JsonResponse
     {
         try {
-        $department = $request->query->get('ownerDepartment');
-        $status = $request->query->get('status');
-        $category = $request->query->get('category');
-        $minCost = $request->query->get('minCost');
-        $maxCost = $request->query->get('maxCost');
-        $tools = $this->entityManager->getRepository(Tools::class)->findByFilters($department, $status, $category, $minCost, $maxCost);
+            $department = $request->query->get('ownerDepartment');
+            $status = $request->query->get('status');
+            $category = $request->query->get('category');
+            $minCost = $request->query->get('min_cost');
+            $maxCost = $request->query->get('max_cost');
 
-        return $this->json(
-            $tools,
-            200,
-            [],
-            ['groups' => ['tool:list']]
-        );
+            $tools = $this->entityManager->getRepository(Tools::class)->findByFilters(
+                $department, $status, $category, $minCost, $maxCost
+            );
+            $data = [
+                "data" => $tools,
+                "total"=>count($tools),
+                "filtered_applied"=>array_filter([
+                    'ownerDepartment' => $department,
+                    'status' => $status,
+                    'category' => $category,
+                    'min_cost' => $minCost,
+                    'max_cost' => $maxCost,
+                ])
+            ];
 
-        } catch (\InvalidArgumentException $exception) {
-            return $this->json([
-                'error' => $exception->getMessage()
-            ], 400);
-        } catch (\Doctrine\DBAL\Exception $exception) {
-            return $this->json([
-                'error' => $exception->getMessage()
-            ], 500);
+
+            return $this->json($data, 200, [], ['groups' => ['tool:list']]);
+
+        } catch (\InvalidArgumentException $e) {
+            return $this->json(['error' => $e->getMessage()], 422);
+        } catch (\Doctrine\DBAL\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -134,13 +140,18 @@ final class ToolsController extends AbstractController
     {
         try {
             $tool = $this->entityManager->getRepository(Tools::class)->find($id);
+            if (!$tool) {
+                throw new NotFoundHttpException();
+            }
             return $this->json($tool);
 
         }catch (NotFoundHttpException $exception){
             return $this->json([
-                'error' => $exception->getMessage(),
-                'message' => "tool with id {$id} not found",
-                404]);
+                'error' => "Tool not found",
+                'message' => "Tool with id $id does not exist",
+                ],404);
+        }catch (\Exception $e){
+            return $this->json(["error" => $e->getMessage()], 500);
         }
     }
 
@@ -188,7 +199,12 @@ final class ToolsController extends AbstractController
         $tool->setCategory($category);
         }
 
-        $this->validatorResponder->validate($tool);
+        // vérifie s'il y a des erreurs pour les afficher
+        $response = $this->validatorResponder->validate($tool);
+        if ($response !== null) {
+            return $response;
+        }
+
 
         $this->entityManager->persist($tool);
         $this->entityManager->flush();
@@ -253,6 +269,10 @@ final class ToolsController extends AbstractController
             $serializer->deserialize($request->getContent(), Tools::class, 'json', ['object_to_populate' => $tool]
             );
 
+            if (!$tool){
+                throw new NotFoundHttpException("tool with id {$id} not found");
+            }
+
             if (isset($data['category'])){
                 $category = $this->entityManager->getRepository(Categories::class)->findOneBy(['name' => $data['category']]);
                 $tool->setCategory($category);
@@ -268,13 +288,15 @@ final class ToolsController extends AbstractController
             ], 201);
 
         }catch (\InvalidArgumentException $exception){
-            return $this->json(['error' => $exception->getMessage(),422]);
+            return $this->json(['error' => $exception->getMessage()],422);
 
         }catch (NotFoundHttpException $exception){
             return $this->json([
                 'error' => $exception->getMessage(),
                 'message' => "tool with id {$id} not found",
-                404]);
+                ],404);
+        }catch (\Exception $exception){
+            return $this->json(['error' => $exception->getMessage()],500);
         }
     }
 }
