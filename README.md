@@ -10,12 +10,14 @@
 
 ## Quick Start
 
-1. `docker-compose --profile up`
+1. `docker-compose --profile all up -d`
 - Cela démarre :
 - PostgreSQL (avec initialisation via init.sql)
-- PHP (Symfony)
+- PHP
 - Nginx
 - pgAdmin
+Api disponible sur http://localhost:8000
+Documentation: http://localhost:8000/api/doc
 
 3. Installer les dépendances PHP
 - Dans le conteneur PHP :
@@ -26,9 +28,6 @@
    composer require --dev symfony/test-pack
    composer require --dev symfony/maker-bundle
    ```
-5. Accéder à l’API
-- http://localhost:8000
-- Exemple de endpoints GET http://localhost:8000/api/tools
 
 ## Configuration
 - Variables d'environnement: voir .env
@@ -42,11 +41,9 @@
 ## Base de données
 - postgresql/init.sql
 
-## APIs testée avec Postman
-```
-GET /api/tools
-GET /api/tools/filter?ownerDepartment=Design&status=active
-```
+## tests
+- php bin/phpunit
+
 
 
 
