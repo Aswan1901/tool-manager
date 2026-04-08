@@ -9,7 +9,7 @@ final class AnalyticsControllerTest extends WebTestCase
     public function testIndex(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/analytics');
+        $client->request('GET', '/api/analytics/department-costs');
 
         self::assertResponseIsSuccessful();
     }

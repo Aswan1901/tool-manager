@@ -59,6 +59,13 @@ class ToolsRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getAllVendors() :array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('t.vendor')
+            ->distinct();
+        return array_column($qb->getQuery()->getResult(), 'vendor');
+    }
 
     //    /**
     //     * @return Tools[] Returns an array of Tools objects

@@ -27,23 +27,23 @@ class DataAnalytics
 
             if (!isset($dataAnalytics[$department])){
                 $dataAnalytics[$department]=[
-                    "totalCost"=> 0,
-                    "totalCount"=>0,
-                    "totalUsers"=>0,
-                    "averageCost"=>0,
-                    "percentageCost"=>0,
+                    "total_cost"=> 0,
+                    "total_count"=>0,
+                    "total_users"=>0,
+                    "average_cost"=>0,
+                    "percentage_cost"=>0,
                 ];
             }
 
-            $dataAnalytics[$department]["totalCost"] = round($dataAnalytics[$department]["totalCost"] + $toolCost, 2);
-            $dataAnalytics[$department]["totalCount"]++;
-            $dataAnalytics[$department]["totalUsers"] += $users;
+            $dataAnalytics[$department]["total_cost"] = round($dataAnalytics[$department]["total_cost"] + $toolCost, 2);
+            $dataAnalytics[$department]["total_count"]++;
+            $dataAnalytics[$department]["total_users"] += $users;
 
         }
 
         //la somme totale de tous les départements
         $totalDepartmentsCost = array_sum(
-            array_column($dataAnalytics, "totalCost")
+            array_column($dataAnalytics, "total_cost")
         );
 
         $summary["total_company_cost"] = round($totalDepartmentsCost,2) ;
@@ -51,15 +51,15 @@ class DataAnalytics
 
         foreach($dataAnalytics as $department => $stats){
 
-            $averageCost  = $stats["totalCost"] / $stats["totalCount"];
-            $percentageCost = ($stats["totalCost"] / $totalDepartmentsCost) * 100;
+            $averageCost  = $stats["total_cost"] / $stats["total_count"];
+            $percentageCost = ($stats["total_cost"] / $totalDepartmentsCost) * 100;
 
-            $dataAnalytics[$department]["averageCost"] = round($averageCost, 2);
-            $dataAnalytics[$department]["percentageCost"] = round($percentageCost, 2);
+            $dataAnalytics[$department]["average_cost"] = round($averageCost, 2);
+            $dataAnalytics[$department]["percentage_cost"] = round($percentageCost, 2);
 
-            if ($stats["totalCost"] > $maxCost)
+            if ($stats["total_cost"] > $maxCost)
             {
-                $maxCost = $stats["totalCost"];
+                $maxCost = $stats["total_cost"];
                 $summary["most_expensive_department"] = $department;
             }
         }
