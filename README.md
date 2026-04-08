@@ -9,15 +9,15 @@
 - Port API : http://localhost:8000
 
 ## Quick Start
-
+- Api disponible sur http://localhost:8000
+- Documentation: http://localhost:8000/api/doc
 1. `docker-compose --profile all up -d`
 - Cela démarre :
 - PostgreSQL (avec initialisation via init.sql)
 - PHP
 - Nginx
 - pgAdmin
-Api disponible sur http://localhost:8000
-Documentation: http://localhost:8000/api/doc
+
 
 3. Installer les dépendances PHP
 - Dans le conteneur PHP :
