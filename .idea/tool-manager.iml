@@ -92,6 +92,14 @@
       <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/validator" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/nelmio/api-doc-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/asset" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/options-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/twig-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/symfony/twig-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/twig/extra-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/twig/twig" />
+      <excludeFolder url="file://$MODULE_DIR$/ToolManagerApp/vendor/zircote/swagger-php" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
