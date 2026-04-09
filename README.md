@@ -13,7 +13,7 @@ Api disponible sur http://localhost:8000
 Documentation: http://localhost:8000/api/doc
 1. Lancement de Docker:
 - `docker-compose --profile all up -d`
-- Cela démarre :
+Cela démarre :
 - PostgreSQL (avec initialisation via init.sql)
 - PHP
 - Nginx
@@ -43,6 +43,7 @@ Documentation: http://localhost:8000/api/doc
 - postgresql/init.sql
 
 ## tests
+Commande à lancé dans le conteneur PHP
 - php bin/phpunit
 
 
