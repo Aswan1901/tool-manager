@@ -100,6 +100,14 @@
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/composer" />
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/validator" />
       <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/options-resolver" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/nelmio/api-doc-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/twig-bundle" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/twig-bridge" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/symfony/asset" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/ToolManagerApp/vendor/twig/extra-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.4" />

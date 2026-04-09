@@ -30,7 +30,7 @@ class DataAnalytics
                     "total_cost"=> 0,
                     "total_count"=>0,
                     "total_users"=>0,
-                    "average_cost"=>0,
+                    "average_cost_per_tool"=>0,
                     "percentage_cost"=>0,
                 ];
             }
@@ -54,7 +54,7 @@ class DataAnalytics
             $averageCost  = $stats["total_cost"] / $stats["total_count"];
             $percentageCost = ($stats["total_cost"] / $totalDepartmentsCost) * 100;
 
-            $dataAnalytics[$department]["average_cost"] = round($averageCost, 2);
+            $dataAnalytics[$department]["average_cost_per_tool"] = round($averageCost, 2);
             $dataAnalytics[$department]["percentage_cost"] = round($percentageCost, 2);
 
             if ($stats["total_cost"] > $maxCost)

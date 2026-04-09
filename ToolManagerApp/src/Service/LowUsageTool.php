@@ -48,7 +48,7 @@ class LowUsageTool{
                 "id"=>$tool->getId(),
                 "name"=>$tool->getName(),
                 "monthly_cost"=>$tool->getMonthlyCost(),
-                "active_user_count"=>$tool->getActiveUsersCount(),
+                "active_users_count"=>$tool->getActiveUsersCount(),
                 "cost_per_user"=>$costPerUser,
                 "vendor"=>$tool->getVendor(),
                 "warning_level"=>$warningLevel,

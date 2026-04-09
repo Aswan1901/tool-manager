@@ -6,81 +6,96 @@ use App\Entity\Tools;
 use App\Repository\ToolsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class VendorData{
-    /*
-        {
-          "data": [
-            {
-              "vendor": "Google",
-              "tools_count": 4,
-              "total_monthly_cost": 234.50,
-              "total_users": 67,
-              "departments": "Engineering,Sales,Marketing",
-              "average_cost_per_user": 3.50,
-              "vendor_efficiency": "excellent"
-            }
-          ],
-          "vendor_insights": {
-            "most_expensive_vendor": "BigCorp",
-            "most_efficient_vendor": "Google",
-            "single_tool_vendors": 8
-          }
-        }
-    */
-
+class VendorData
+{
     public function __construct(
-        Private EntityManagerInterface $entityManager,
-        Private ToolsRepository $toolsRepository,
-    ){}
+        private EntityManagerInterface $entityManager,
+        private ToolsRepository $toolsRepository,
+    ) {}
 
     public function getVendorsData(): array
     {
         $tools = $this->entityManager->getRepository(Tools::class)->findAll();
         $vendors = $this->toolsRepository->getAllVendors();
+
         $data = [];
-        $totalMonthlyCost = 0;
-        $averageCostPerUser=0;
-        $vendorEfficiency=null;
-        $highestCost=0;
-        $mostExpensiveVendor=null;
-        $mostEfficientVendor=[];
+
+        $highestCost = 0;
+        $mostExpensiveVendor = null;
+
+        $lowestAverageCostPerUser = null;
+        $mostEfficientVendor = null;
+
+        $singleToolVendors = 0;
 
         foreach ($vendors as $vendor) {
+            $toolsCount = 0;
+            $totalMonthlyCost = 0.0;
+            $totalUsers = 0;
+            $departments = [];
 
-            $toolCount =0;
             foreach ($tools as $tool) {
-                if ($tool->getVendor() === $vendor) {
-                    $toolCount++;
-                    round($totalMonthlyCost += $tool->getMonthlyCost(), 2);
-                }
-                if ($tool->getMonthlyCost() > $highestCost ){
-                    $mostExpensiveVendor = $tool->getVendor();
+                if ($tool->getVendor() !== $vendor) {
+                    continue;
                 }
 
-                $averageCostPerUser = $averageCostPerUser > 0 ??((float) $tool->getMonthlyCost() / $tool->getActiveUsersCount());
-                $vendorEfficiency = match(true) {
-                    $averageCostPerUser < 5  => "excellent",
-                    $averageCostPerUser <= 15  => "good",
-                    $averageCostPerUser >25 => "poor",
-                };
+                $toolsCount++;
+                $totalMonthlyCost += (float) $tool->getMonthlyCost();
+                $totalUsers += (int) $tool->getActiveUsersCount();
 
-                $mostEfficientVendor = [$averageCostPerUser];
+                $department = $tool->getOwnerDepartment();
 
+                if ($department !== null) {
+                    $departmentValue = $department->value;
+
+                    if (!in_array($departmentValue, $departments, true)) {
+                        $departments[] = $departmentValue;
+                    }
+                }
             }
-                $data[]=[
-                    'vendor' => $vendor,
-                    'toolCount' => $toolCount,
-                    'total_monthly_cost'=>$totalMonthlyCost,
-                    'average_cost_per_user'=>$averageCostPerUser,
-                    'vendor_efficiency'=>$vendorEfficiency,
-                    'most_efficient_vendor'=>$mostEfficientVendor,
-                ];
+
+            if ($toolsCount === 1) {
+                $singleToolVendors++;
+            }
+
+            $averageCostPerUser = $totalUsers > 0
+                ? $totalMonthlyCost / $totalUsers
+                : 0.0;
+
+            $vendorEfficiency = match (true) {
+                $averageCostPerUser < 5 => 'excellent',
+                $averageCostPerUser <= 15 => 'good',
+                $averageCostPerUser <= 25 => 'average',
+                default => 'poor',
+            };
+
+            if ($totalMonthlyCost > $highestCost) {
+                $highestCost = $totalMonthlyCost;
+                $mostExpensiveVendor = $vendor;
+            }
+
+            if ($lowestAverageCostPerUser === null || $averageCostPerUser < $lowestAverageCostPerUser) {
+                $lowestAverageCostPerUser = $averageCostPerUser;
+                $mostEfficientVendor = $vendor;
+            }
+
+            $data[] = [
+                'vendor' => $vendor,
+                'tools_count' => $toolsCount,
+                'total_monthly_cost' => round($totalMonthlyCost, 2),
+                'total_users' => $totalUsers,
+                'departments' => implode(',', $departments),
+                'average_cost_per_user' => round($averageCostPerUser, 2),
+                'vendor_efficiency' => $vendorEfficiency,
+            ];
         }
 
         return [
             'data' => $data,
-            'vendor_insights'=>[
-                'most_expensive_vendor'=>$mostExpensiveVendor,
+            'vendor_insights' => [
+                'most_expensive_vendor' => $mostExpensiveVendor,
+                'most_efficient_vendor' => $mostEfficientVendor,
+                'single_tool_vendors' => $singleToolVendors,
             ],
         ];
     }
