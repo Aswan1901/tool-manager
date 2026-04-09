@@ -31,12 +31,13 @@
   POSTGRES_USER=
   POSTGRES_PASSWORD=
   POSTGRES_PORT=
+  DATABASE_URL
 ```
   
 ## Base de données
 - postgresql/init.sql
 
-## tests
+## Tests
 Commande à lancé dans le conteneur PHP
 - php bin/phpunit
 
