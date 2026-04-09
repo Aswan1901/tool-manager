@@ -9,10 +9,10 @@
 - Port API : http://localhost:8000
 
 ## Quick Start
-- Api disponible sur http://localhost:8000
-- Documentation: http://localhost:8000/api/doc
-- Lancement de Docker:
-1. `docker-compose --profile all up -d`
+Api disponible sur http://localhost:8000
+Documentation: http://localhost:8000/api/doc
+1. Lancement de Docker:
+- `docker-compose --profile all up -d`
 - Cela démarre :
 - PostgreSQL (avec initialisation via init.sql)
 - PHP
